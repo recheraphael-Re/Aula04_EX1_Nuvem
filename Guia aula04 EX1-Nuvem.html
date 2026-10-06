@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guia Aula04 EX1 - Nuvem</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1c1f24; --muted:#5b636e;
+    --line:#e2e5ea; --accent:#0b6bcb; --accent-soft:#e8f1fc;
+    --code-bg:#1e222a; --code-ink:#e6e9ef; --ok:#0f7b46; --ok-soft:#e6f5ed;
+    --warn:#8a5a00; --warn-soft:#fdf3e0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:32px 20px 64px}
+  header.cover{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:28px 30px;margin-bottom:28px}
+  .kicker{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.08em;
+    text-transform:uppercase;margin:0 0 6px}
+  h1{margin:0 0 8px;font-size:30px;line-height:1.2}
+  .sub{color:var(--muted);margin:0}
+  .meta{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:10px 26px;font-size:14px;color:var(--muted)}
+  .meta b{color:var(--ink);font-weight:600}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px}
+  h2{font-size:20px;margin:0 0 14px;display:flex;align-items:center;gap:12px}
+  .num{background:var(--accent);color:#fff;width:30px;height:30px;flex:0 0 30px;
+    border-radius:50%;display:grid;place-items:center;font-size:15px;font-weight:700}
+  h3{font-size:16px;margin:22px 0 8px}
+  p{margin:0 0 12px}
+  pre{background:var(--code-bg);color:var(--code-ink);padding:14px 16px;border-radius:9px;
+    overflow-x:auto;margin:10px 0;font:14px/1.55 Consolas,"Courier New",monospace}
+  pre .p{color:#7f8794}
+  code{background:#eef0f4;padding:2px 6px;border-radius:4px;
+    font:14px Consolas,"Courier New",monospace}
+  pre code{background:none;padding:0;color:inherit;font-size:inherit}
+  .note{border-left:4px solid var(--accent);background:var(--accent-soft);
+    padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:15px}
+  .warn{border-left:4px solid var(--warn);background:var(--warn-soft);
+    padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:15px}
+  .ok{border-left:4px solid var(--ok);background:var(--ok-soft);
+    padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:15px}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#f1f3f6;font-weight:600}
+  td code{font-size:13px}
+  ul,ol{margin:0 0 12px;padding-left:22px}
+  li{margin-bottom:6px}
+  footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
+  @media print{
+    body{background:#fff}
+    .wrap{max-width:100%;padding:0}
+    section,header.cover{break-inside:avoid;border-color:#ccc;box-shadow:none}
+    pre{background:#f2f2f2;color:#111;border:1px solid #ddd}
+    pre .p{color:#666}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="kicker">Computa&ccedil;&atilde;o em Nuvem &middot; Aula 04 &middot; Exerc&iacute;cio 1</p>
+  <h1>Guia Aula04 EX1 - Nuvem</h1>
+  <p class="sub">Criando e executando uma aplica&ccedil;&atilde;o Java 21 dentro de um container Docker.</p>
+  <div class="meta">
+    <span><b>Pasta:</b> C:\Users\Instrutor\Aula04_EX1_Nuvem</span>
+    <span><b>Terminal:</b> PowerShell (Windows)</span>
+    <span><b>Imagem base:</b> eclipse-temurin:21-jdk</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="num">0</span> O que vamos fazer</h2>
+  <p>O objetivo &eacute; empacotar um programa Java em uma <b>imagem Docker</b> e execut&aacute;-lo em um
+  <b>container</b>, sem precisar instalar o Java na m&aacute;quina &mdash; o Java j&aacute; vem dentro da imagem.</p>
+  <table>
+    <tr><th>Arquivo</th><th>Fun&ccedil;&atilde;o</th></tr>
+    <tr><td><code>Main.java</code></td><td>C&oacute;digo-fonte Java que imprime mensagens no terminal.</td></tr>
+    <tr><td><code>Dockerfile</code></td><td>Receita que ensina o Docker a montar a imagem: copiar, compilar e executar.</td></tr>
+  </table>
+  <div class="note"><b>Imagem</b> &eacute; o &quot;molde&quot; (o pacote pronto, salvo em disco).
+  <b>Container</b> &eacute; o molde em execu&ccedil;&atilde;o. De uma imagem voc&ecirc; pode criar v&aacute;rios containers.</div>
+</section>
+
+<section>
+  <h2><span class="num">1</span> Abrir o terminal na pasta do projeto</h2>
+  <p>Abra o <b>PowerShell</b> e navegue at&eacute; a pasta do exerc&iacute;cio:</p>
+<pre><code>cd C:\Users\Instrutor\Aula04_EX1_Nuvem</code></pre>
+  <p>Confirme que os dois arquivos est&atilde;o presentes:</p>
+<pre><code>ls</code></pre>
+  <p>Devem aparecer <code>Dockerfile</code> e <code>Main.java</code>.</p>
+  <div class="warn"><b>Aten&ccedil;&atilde;o:</b> se voc&ecirc; n&atilde;o estiver dentro dessa pasta, o comando
+  <code>docker build</code> vai falhar com erro de arquivo n&atilde;o encontrado.</div>
+</section>
+
+<section>
+  <h2><span class="num">2</span> Verificar se o Docker est&aacute; funcionando</h2>
+  <p>Confira a vers&atilde;o instalada:</p>
+<pre><code>docker --version</code></pre>
+  <p>E se o servi&ccedil;o (daemon) est&aacute; no ar:</p>
+<pre><code>docker info</code></pre>
+  <div class="warn">Se aparecer <i>&quot;cannot connect to the Docker daemon&quot;</i> ou
+  <i>&quot;error during connect&quot;</i>, abra o <b>Docker Desktop</b>, aguarde o &iacute;cone da baleia ficar
+  verde/est&aacute;vel e rode <code>docker info</code> novamente.</div>
+</section>
+
+<section>
+  <h2><span class="num">3</span> Entender o Dockerfile</h2>
+<pre><code><span class="p"># Imagem base: j&aacute; vem com o JDK 21 instalado</span>
+FROM eclipse-temurin:21-jdk
+
+<span class="p"># Diret&oacute;rio de trabalho dentro do container</span>
+WORKDIR /app
+
+<span class="p"># Copia Main.java da m&aacute;quina local para /app no container</span>
+COPY Main.java .
+
+<span class="p"># Compila o c&oacute;digo durante a CRIA&Ccedil;&Atilde;O da imagem (gera Main.class)</span>
+RUN javac Main.java
+
+<span class="p"># Comando executado quando o container &eacute; iniciado</span>
+CMD ["java", "Main"]</code></pre>
+  <table>
+    <tr><th>Instru&ccedil;&atilde;o</th><th>Quando roda</th><th>O que faz</th></tr>
+    <tr><td><code>FROM</code></td><td>build</td><td>Define a imagem base (sistema + JDK 21).</td></tr>
+    <tr><td><code>WORKDIR</code></td><td>build</td><td>Cria e entra na pasta <code>/app</code>.</td></tr>
+    <tr><td><code>COPY</code></td><td>build</td><td>Leva o arquivo do seu PC para dentro da imagem.</td></tr>
+    <tr><td><code>RUN</code></td><td>build</td><td>Executa a compila&ccedil;&atilde;o e grava o resultado na imagem.</td></tr>
+    <tr><td><code>CMD</code></td><td>run</td><td>Comando padr&atilde;o ao iniciar o container.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">4</span> Construir a imagem</h2>
+<pre><code>docker build -t aula04-java .</code></pre>
+  <ul>
+    <li><code>-t aula04-java</code> &mdash; d&aacute; um nome (tag) &agrave; imagem.</li>
+    <li><code>.</code> &mdash; o ponto final indica o <b>contexto de build</b>: a pasta atual. Ele &eacute;
+    obrigat&oacute;rio e esquec&ecirc;-lo &eacute; o erro mais comum.</li>
+  </ul>
+  <p>Durante o build voc&ecirc; ver&aacute; as etapas <code>[1/4] FROM</code>, <code>[2/4] WORKDIR</code>,
+  <code>[3/4] COPY</code>, <code>[4/4] RUN javac</code>. Ao final:</p>
+<pre><code>=&gt; naming to docker.io/library/aula04-java</code></pre>
+  <div class="note">Na primeira execu&ccedil;&atilde;o o download da imagem base (~300 MB) pode demorar.
+  Nas pr&oacute;ximas vezes o Docker reaproveita o cache e o build &eacute; quase instant&acirc;neo.</div>
+</section>
+
+<section>
+  <h2><span class="num">5</span> Conferir se a imagem foi criada</h2>
+<pre><code>docker images</code></pre>
+  <p>A imagem <code>aula04-java</code> deve aparecer na lista, com a tag <code>latest</code>.</p>
+</section>
+
+<section>
+  <h2><span class="num">6</span> Executar o container</h2>
+<pre><code>docker run --rm aula04-java</code></pre>
+  <p><code>--rm</code> remove o container automaticamente ao terminar, evitando ac&uacute;mulo de
+  containers parados na m&aacute;quina.</p>
+  <h3>Sa&iacute;da esperada</h3>
+<pre><code>============
+Computa&ccedil;&atilde;o em nuvem - Aula 05
+============
+Ol&aacute; Docker
+Java 21 executando em um container
+Prof Daniel Vieira</code></pre>
+  <div class="ok"><b>Funcionou!</b> Seu c&oacute;digo Java rodou dentro de um container isolado,
+  usando o Java 21 que veio na imagem &mdash; n&atilde;o o da sua m&aacute;quina.</div>
+</section>
+
+<section>
+  <h2><span class="num">7</span> Alterou o c&oacute;digo? Refa&ccedil;a o build</h2>
+  <p>O Java &eacute; compilado <b>durante o build</b>. Ent&atilde;o, ao editar o <code>Main.java</code>,
+  a imagem antiga continua com o c&oacute;digo velho. Rode os dois comandos na ordem:</p>
+<pre><code>docker build -t aula04-java .
+docker run --rm aula04-java</code></pre>
+  <p>Se quiser for&ccedil;ar tudo do zero, ignorando o cache:</p>
+<pre><code>docker build --no-cache -t aula04-java .</code></pre>
+</section>
+
+<section>
+  <h2><span class="num">8</span> Comandos &uacute;teis do dia a dia</h2>
+  <table>
+    <tr><th>Comando</th><th>Para que serve</th></tr>
+    <tr><td><code>docker ps</code></td><td>Lista containers em execu&ccedil;&atilde;o.</td></tr>
+    <tr><td><code>docker ps -a</code></td><td>Lista todos os containers, inclusive os parados.</td></tr>
+    <tr><td><code>docker images</code></td><td>Lista as imagens salvas na m&aacute;quina.</td></tr>
+    <tr><td><code>docker run -it aula04-java bash</code></td><td>Abre um terminal dentro do container para investigar (<code>ls</code>, <code>cat</code>...). Saia com <code>exit</code>.</td></tr>
+    <tr><td><code>docker rm &lt;id&gt;</code></td><td>Remove um container parado.</td></tr>
+    <tr><td><code>docker rmi aula04-java</code></td><td>Remove a imagem.</td></tr>
+    <tr><td><code>docker logs &lt;id&gt;</code></td><td>Mostra a sa&iacute;da de um container j&aacute; executado.</td></tr>
+    <tr><td><code>docker system prune</code></td><td>Limpa imagens/containers n&atilde;o utilizados (libera disco).</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">9</span> Solu&ccedil;&atilde;o de problemas</h2>
+  <table>
+    <tr><th>Mensagem</th><th>Causa</th><th>Solu&ccedil;&atilde;o</th></tr>
+    <tr><td><code>cannot connect to the Docker daemon</code></td><td>Docker Desktop fechado.</td><td>Abrir o Docker Desktop e aguardar iniciar.</td></tr>
+    <tr><td><code>&quot;docker build&quot; requires exactly 1 argument</code></td><td>Faltou o ponto final.</td><td>Use <code>docker build -t aula04-java .</code></td></tr>
+    <tr><td><code>failed to compute cache key: Main.java not found</code></td><td>Terminal em outra pasta.</td><td><code>cd C:\Users\Instrutor\Aula04_EX1_Nuvem</code></td></tr>
+    <tr><td><code>class Main is public, should be in a file named Main.java</code></td><td>Nome do arquivo diferente do nome da classe.</td><td>O arquivo precisa se chamar exatamente <code>Main.java</code>.</td></tr>
+    <tr><td><code>Could not find or load main class Main</code></td><td><code>CMD</code> com nome errado.</td><td>Deve ser <code>CMD ["java", "Main"]</code> (sem <code>.class</code>).</td></tr>
+    <tr><td>Sa&iacute;da antiga aparecendo</td><td>Imagem n&atilde;o reconstru&iacute;da.</td><td>Rodar <code>docker build</code> de novo antes do <code>run</code>.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">10</span> Sequ&ecirc;ncia completa (resumo)</h2>
+<pre><code>cd C:\Users\Instrutor\Aula04_EX1_Nuvem
+ls
+docker info
+docker build -t aula04-java .
+docker images
+docker run --rm aula04-java</code></pre>
+  <div class="note">Guarde esses seis comandos: eles resolvem o exerc&iacute;cio do in&iacute;cio ao fim.</div>
+</section>
+
+<footer>Guia Aula04 EX1 - Nuvem &middot; Computa&ccedil;&atilde;o em Nuvem &middot; Prof. Daniel Vieira</footer>
+
+</div>
+</body>
+</html>
